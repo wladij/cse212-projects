@@ -13,7 +13,21 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        // 1. Create a new array of doubles with size equal to 'length'
+        // 2. Loop from index 0 to length - 1
+        // 3. For each index, calculate the multiple:
+        //    multiple = number * (index + 1)
+        // 4. Store the result in the array
+        // 5. Return the array
+
+        double[] result = new double[length];
+
+        for (int i = 0; i < length; i++)
+        {
+            result[i] = number * (i + 1);
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -29,5 +43,29 @@ public static class Arrays
         // Remember: Using comments in your program, write down your process for solving this problem
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
+
+        
+        // 1. Determine how many elements will move from the end to the front (amount)
+        // 2. Get the last 'amount' elements using GetRange
+        // 3. Get the remaining elements from the beginning of the list
+        // 4. Clear the original list
+        // 5. Add the rotated elements back in the correct order:
+        //    - First the elements from the end
+        //    - Then the elements from the beginning
+
+        int count = data.Count;
+
+        // Get the elements that will move to the front
+        List<int> endPart = data.GetRange(count - amount, amount);
+
+        // Get the remaining elements
+        List<int> startPart = data.GetRange(0, count - amount);
+
+        // Clear the original list
+        data.Clear();
+
+        // Rebuild the list in rotated order
+        data.AddRange(endPart);
+        data.AddRange(startPart);
     }
 }
