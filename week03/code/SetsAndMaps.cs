@@ -22,7 +22,28 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var seen = new HashSet<string>();
+    var result = new List<string>();
+
+    foreach (var word in words)
+    {
+        // ignorar casos tipo "aa"
+        if (word[0] == word[1])
+            continue;
+
+        var reversed = $"{word[1]}{word[0]}";
+
+        if (seen.Contains(reversed))
+        {
+            result.Add($"{reversed} & {word}");
+        }
+        else
+        {
+            seen.Add(word);
+        }
+    }
+
+    return result.ToArray();
     }
 
     /// <summary>
@@ -43,6 +64,16 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            var degree = fields[3].Trim();
+
+            if (!degrees.ContainsKey(degree))
+            {
+                degrees[degree] = 1;
+            }
+            else
+            {
+                degrees[degree]++;
+            }
         }
 
         return degrees;
@@ -67,7 +98,43 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        var counts = new Dictionary<char, int>();
+
+    foreach (char c in word1)
+    {
+        if (c == ' ') continue;
+
+        char letter = char.ToLower(c);
+
+        if (!counts.ContainsKey(letter))
+            counts[letter] = 1;
+        else
+            counts[letter]++;
+    }
+
+    foreach (char c in word2)
+    {
+        if (c == ' ') continue;
+
+        char letter = char.ToLower(c);
+
+        if (!counts.ContainsKey(letter))
+            return false;
+
+        counts[letter]--;
+
+        if (counts[letter] < 0)
+            return false;
+    }
+
+    
+    foreach (var value in counts.Values)
+    {
+        if (value != 0)
+            return false;
+    }
+
+    return true;
     }
 
     /// <summary>
@@ -95,12 +162,21 @@ public static class SetsAndMaps
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
-
+        
         // TODO Problem 5:
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+        var results = new List<string>();
+        foreach (var feature in featureCollection.Features)
+    {
+        var place = feature.Properties.Place;
+        var mag = feature.Properties.Mag;
+
+        results.Add($"{place} - Mag {mag}");
+    }
+
+    return results.ToArray();
     }
 }
